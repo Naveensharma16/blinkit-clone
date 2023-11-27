@@ -1,14 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getCartItemFromStorage = localStorage.getItem("cart");
+const getCartTotalFromStorage = localStorage.getItem("carttotal");
+
+type cartTypeProp = {
+  id: string;
+  img: string;
+  name: string;
+  price: number;
+  quantity: number;
+  total: number;
+};
+
 const initialState = {
   cart:
-    localStorage.getItem("cart") === null
-      ? []
-      : JSON.parse(localStorage.getItem("cart")),
+    getCartItemFromStorage === null ? [] : JSON.parse(getCartItemFromStorage),
   total:
-    localStorage.getItem("carttotal") === null
-      ? 0
-      : JSON.parse(localStorage.getItem("carttotal")),
+    getCartTotalFromStorage === null ? 0 : JSON.parse(getCartTotalFromStorage),
 };
 
 const cartSlice = createSlice({
@@ -17,14 +25,14 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, action) => {
       const founditem = state.cart.find(
-        (item) => item.id === action.payload.id
+        (item: { id: string }) => item.id === action.payload.id
       );
 
       if (founditem === undefined) {
         state.cart = [...state.cart, action.payload];
 
         let total = 0;
-        state.cart.forEach((item) => {
+        state.cart.forEach((item: cartTypeProp) => {
           total += item.total;
         });
 
@@ -36,12 +44,12 @@ const cartSlice = createSlice({
       }
     },
     incrementQuantity: (state, action) => {
-      const updatedcart = state.cart.map((item) => {
+      const updatedcart = state.cart.map((item: cartTypeProp) => {
         if (item.id === action.payload.id) {
           return {
             ...item,
             quantity: action.payload.qty + 1,
-            get total() {
+            get total(): number {
               return this.quantity * this.price;
             },
           };
@@ -52,7 +60,7 @@ const cartSlice = createSlice({
       state.cart = updatedcart;
 
       let total = 0;
-      state.cart.forEach((item) => {
+      state.cart.forEach((item: cartTypeProp) => {
         total += item.total;
       });
 
@@ -63,24 +71,24 @@ const cartSlice = createSlice({
     },
     decrementQuantity: (state, action) => {
       const updatedcart = state.cart
-        .map((item) => {
+        .map((item: cartTypeProp) => {
           if (item.id === action.payload.id) {
             return {
               ...item,
               quantity: action.payload.qty - 1,
-              get total() {
+              get total(): number {
                 return this.quantity * this.price;
               },
             };
           }
           return item;
         })
-        .filter((item) => item.quantity !== 0);
+        .filter((item: cartTypeProp) => item.quantity !== 0);
 
       state.cart = updatedcart;
 
       let total = 0;
-      state.cart.forEach((item) => {
+      state.cart.forEach((item: cartTypeProp) => {
         total += item.total;
       });
 
@@ -93,8 +101,8 @@ const cartSlice = createSlice({
       state.cart = [];
       state.total = 0;
 
-      localStorage.removeItem("cart", JSON.stringify(state.cart));
-      localStorage.removeItem("carttotal", JSON.stringify(state.total));
+      localStorage.removeItem("cart");
+      localStorage.removeItem("carttotal");
     },
   },
 });

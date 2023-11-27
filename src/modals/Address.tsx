@@ -65,12 +65,14 @@ export default function Address({
       )
         .then((response) => response.json())
         .then((data) => {
-          const addresslist = data.map((item) => {
-            return {
-              id: item.place_id,
-              address: item.display_name,
-            };
-          });
+          const addresslist = data.map(
+            (item: { place_id: number; display_name: string }) => {
+              return {
+                id: item.place_id,
+                address: item.display_name,
+              };
+            }
+          );
           setSearchResult(addresslist);
         });
     }

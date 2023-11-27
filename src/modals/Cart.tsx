@@ -5,12 +5,23 @@ import {
   incrementQuantity,
 } from "../features/Cart/cartSlice.tsx";
 
+import { RootState } from "../app/Store.tsx";
+
 type closeCart = {
   closeCartSidebar: () => void;
 };
 
+type cartTypeProp = {
+  id: string;
+  img: string;
+  name: string;
+  price: number;
+  quantity: number;
+  total: number;
+};
+
 export default function Cart({ closeCartSidebar }: closeCart) {
-  const { cart, total } = useSelector((state) => state.cart);
+  const { cart, total } = useSelector((state: RootState) => state.cart);
 
   const dispatch = useDispatch();
 
@@ -42,7 +53,7 @@ export default function Cart({ closeCartSidebar }: closeCart) {
         {cart.length > 0 ? (
           <>
             <div className="cart-product-list">
-              {cart.map((item) => {
+              {cart.map((item: cartTypeProp) => {
                 return (
                   <div className="single-product" key={item.id}>
                     <div className="product-img">

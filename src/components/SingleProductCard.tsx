@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import "./component.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   addItem,
   decrementQuantity,
   incrementQuantity,
 } from "../features/Cart/cartSlice.tsx";
+
+import { RootState } from "../app/Store.tsx";
 
 type singleProduct = {
   id: string;
@@ -16,6 +18,15 @@ type singleProduct = {
   image: string;
 };
 
+type cartTypeProp = {
+  id: string;
+  img: string;
+  name: string;
+  price: number;
+  quantity: number;
+  total: number;
+};
+
 export default function SingleProductCard({
   id,
   name,
@@ -23,7 +34,7 @@ export default function SingleProductCard({
   price,
   image,
 }: singleProduct) {
-  const [inCart, setInCart] = useState(null);
+  const [inCart, setInCart] = useState<cartTypeProp | null>(null);
 
   // hook to navigate to particular product
   const navigate = useNavigate();
@@ -32,10 +43,10 @@ export default function SingleProductCard({
   const dispatch = useDispatch();
 
   // hook to get cart data
-  const { cart: cartitems } = useSelector((state) => state.cart);
+  const { cart: cartitems } = useSelector((state: RootState) => state.cart);
 
   useEffect(() => {
-    const foundItem = cartitems.find((item) => item.id === id);
+    const foundItem = cartitems.find((item: cartTypeProp) => item.id === id);
 
     if (foundItem !== undefined) {
       setInCart(foundItem);
@@ -59,6 +70,7 @@ export default function SingleProductCard({
       price,
       img: image,
       get total() {
+        // eslint-disable-next-line react/no-this-in-sfc
         return this.quantity * this.price;
       },
     };
@@ -67,12 +79,20 @@ export default function SingleProductCard({
   };
 
   // function to increment the product count
-  const incrementProductCount = (event, id: string, qty: number): void => {
+  const incrementProductCount = (
+    event: React.MouseEvent,
+    id: string,
+    qty: number
+  ): void => {
     event.stopPropagation();
     dispatch(incrementQuantity({ id, qty }));
   };
   // function to decrement the product count
-  const decrementProductCount = (event, id: string, qty: number): void => {
+  const decrementProductCount = (
+    event: React.MouseEvent,
+    id: string,
+    qty: number
+  ): void => {
     event.stopPropagation();
     dispatch(decrementQuantity({ id, qty }));
   };

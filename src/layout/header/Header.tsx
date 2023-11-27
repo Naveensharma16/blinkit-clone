@@ -11,20 +11,20 @@ import Address from "../../modals/Address.tsx";
 import Login from "../../modals/Login.tsx";
 import Cart from "../../modals/Cart.tsx";
 
+import { RootState } from "../../app/Store.tsx";
+
 export default function Header() {
   const [deliveryTime] = useState(Math.floor(Math.random() * 10 + 10));
   const [showAdressPopup, setShowAddressPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showCartPopup, setShowCartPopup] = useState(false);
-  const customerAddress = useSelector((state) => state.address);
+  const customerAddress = useSelector((state: RootState) => state.address);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { total } = useSelector((state) => state.cart);
-  const cartlen = useSelector((state) => state.cart);
-
-  console.log();
+  const { total } = useSelector((state: RootState) => state.cart);
+  const cartlen = useSelector((state: RootState) => state.cart);
 
   // address popup toggle function
   const togglePopupActive = (): void => {
@@ -47,7 +47,7 @@ export default function Header() {
   // function to toggle between cart popup state
 
   useEffect(() => {
-    const keyDownHandler = (event) => {
+    const keyDownHandler = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         hideLoginForm();

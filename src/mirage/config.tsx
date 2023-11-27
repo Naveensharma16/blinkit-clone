@@ -129,12 +129,12 @@ export default function makeServer(): Server {
       });
 
       // Endpoint to fetch products by category
-      this.get("/products/:category", (schema, request) => {
-        const { category } = request.params;
-        const allproducts = schema.all("product");
-        // return allproducts.where({ category });
-        return allproducts.filter((item) => item.category === category);
-      });
+      // this.get("/products/:category", (schema, request) => {
+      //   const { category } = request.params;
+      //   const allproducts = schema.all("product");
+      //   // return allproducts.where({ category });
+      //   return allproducts.filter((item) => item.category === category);
+      // });
 
       this.get("/products/:id", (schema, request) => {
         const { id } = request.params;
