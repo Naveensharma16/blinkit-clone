@@ -9,7 +9,7 @@ import {
   incrementQuantity,
 } from "../../features/Cart/cartSlice.tsx";
 
-import { RootState } from "../../app/Store.tsx";
+import { AppDispatch, RootState } from "../../app/Store.tsx";
 
 type cartTypeProp = {
   id: string;
@@ -23,14 +23,16 @@ type cartTypeProp = {
 export default function SingleProduct() {
   const { id } = useParams();
   const [productDetails, setProductDetails] = useState({
+    id: "",
     name: "",
     img: "",
     description: "",
     price: 0,
   });
+  // check if product is in cart
   const [inCart, setInCart] = useState<cartTypeProp | null>(null);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   // const state = useSelector((state) => state.cart);
 
@@ -54,6 +56,7 @@ export default function SingleProduct() {
       const { products } = data;
 
       setProductDetails({
+        id: products[0].id,
         name: products[0].name,
         img: products[0].image,
         description: products[0].description,
@@ -71,7 +74,6 @@ export default function SingleProduct() {
     event.stopPropagation();
     dispatch(
       addItem({
-        id,
         ...productDetails,
         quantity: 1,
         get total() {

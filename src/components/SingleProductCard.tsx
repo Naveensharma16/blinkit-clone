@@ -34,6 +34,8 @@ export default function SingleProductCard({
   price,
   image,
 }: singleProduct) {
+  // state to check if any data in cart
+  // used to check if particular product is in cart
   const [inCart, setInCart] = useState<cartTypeProp | null>(null);
 
   // hook to navigate to particular product
@@ -61,7 +63,7 @@ export default function SingleProductCard({
   };
 
   // function to add item in cart
-  const addItemToCart = (event: React.MouseEvent): void => {
+  const addItemToCart = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     const itemforcart = {
       id,
@@ -81,6 +83,7 @@ export default function SingleProductCard({
   // function to increment the product count
   const incrementProductCount = (
     event: React.MouseEvent,
+    // eslint-disable-next-line no-shadow
     id: string,
     qty: number
   ): void => {
@@ -90,6 +93,7 @@ export default function SingleProductCard({
   // function to decrement the product count
   const decrementProductCount = (
     event: React.MouseEvent,
+    // eslint-disable-next-line no-shadow
     id: string,
     qty: number
   ): void => {

@@ -9,24 +9,24 @@ import snacks from "../assets/icons/snacksicon.avif";
 import sweets from "../assets/icons/sweeticon.avif";
 
 const categoryicons = [
-  babycare,
-  bakery,
-  breakfast,
-  dairy,
-  fruit,
-  medicine,
-  petcare,
-  snacks,
-  sweets,
+  { id: 1, img: babycare },
+  { id: 2, img: bakery },
+  { id: 3, img: breakfast },
+  { id: 4, img: dairy },
+  { id: 5, img: fruit },
+  { id: 6, img: medicine },
+  { id: 7, img: petcare },
+  { id: 8, img: snacks },
+  { id: 9, img: sweets },
 ];
 
 export default function CategoriesList() {
   return (
     <>
-      {categoryicons.map((item, index) => {
+      {categoryicons.map((item) => {
         return (
-          <div className="single-category-icon" key={index}>
-            <img src={item} alt="" />
+          <div className="single-category-icon" key={item.id}>
+            <img src={item.img} alt="" />
           </div>
         );
       })}

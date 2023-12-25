@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const foundaddress = localStorage.getItem("address");
 
@@ -10,7 +10,7 @@ const addressSlice = createSlice({
   name: "address",
   initialState,
   reducers: {
-    addAddress: (state, action) => {
+    addAddress: (state, action: PayloadAction<string>) => {
       state.address = action.payload;
     },
   },

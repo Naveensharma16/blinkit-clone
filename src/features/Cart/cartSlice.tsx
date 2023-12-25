@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const getCartItemFromStorage = localStorage.getItem("cart");
 const getCartTotalFromStorage = localStorage.getItem("carttotal");
@@ -12,9 +12,11 @@ type cartTypeProp = {
   total: number;
 };
 
-const initialState = {
+const initialState: { cart: cartTypeProp[] | []; total: number | 0 } = {
   cart:
-    getCartItemFromStorage === null ? [] : JSON.parse(getCartItemFromStorage),
+    getCartItemFromStorage === null
+      ? []
+      : [...JSON.parse(getCartItemFromStorage)],
   total:
     getCartTotalFromStorage === null ? 0 : JSON.parse(getCartTotalFromStorage),
 };
@@ -23,7 +25,17 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addItem: (state, action) => {
+    addItem: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        name: string;
+        quantity: number;
+        price: number;
+        img: string;
+        total: number;
+      }>
+    ) => {
       const founditem = state.cart.find(
         (item: { id: string }) => item.id === action.payload.id
       );
@@ -43,7 +55,10 @@ const cartSlice = createSlice({
         localStorage.setItem("carttotal", JSON.stringify(state.total));
       }
     },
-    incrementQuantity: (state, action) => {
+    incrementQuantity: (
+      state,
+      action: PayloadAction<{ id: string; qty: number }>
+    ) => {
       const updatedcart = state.cart.map((item: cartTypeProp) => {
         if (item.id === action.payload.id) {
           return {
@@ -66,10 +81,14 @@ const cartSlice = createSlice({
 
       state.total = Math.floor(total);
 
+      // updating data in localstorage
       localStorage.setItem("cart", JSON.stringify(state.cart));
       localStorage.setItem("carttotal", JSON.stringify(state.total));
     },
-    decrementQuantity: (state, action) => {
+    decrementQuantity: (
+      state,
+      action: PayloadAction<{ id: string; qty: number }>
+    ) => {
       const updatedcart = state.cart
         .map((item: cartTypeProp) => {
           if (item.id === action.payload.id) {

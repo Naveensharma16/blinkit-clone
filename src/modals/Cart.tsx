@@ -5,7 +5,7 @@ import {
   incrementQuantity,
 } from "../features/Cart/cartSlice.tsx";
 
-import { RootState } from "../app/Store.tsx";
+import { AppDispatch, RootState } from "../app/Store.tsx";
 
 type closeCart = {
   closeCartSidebar: () => void;
@@ -23,7 +23,7 @@ type cartTypeProp = {
 export default function Cart({ closeCartSidebar }: closeCart) {
   const { cart, total } = useSelector((state: RootState) => state.cart);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   // function to increment the product count
   const incrementProductCount = (id: string, qty: number): void => {

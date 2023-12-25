@@ -55,6 +55,7 @@ export default function Footer() {
             <div className="usefull-links">
               <h3>Useful Links</h3>
               <ul>
+                {/* i hace used index here but since data is static it wont be problem id should be used in production */}
                 {usefullinks.map((link, index) => {
                   return <li key={index}>{link}</li>;
                 })}
